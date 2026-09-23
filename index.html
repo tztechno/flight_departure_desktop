@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Itami Airport (RJOO) Runway 32L — Itami Curve 3D Flight Simulator</title>
+    <meta name="description" content="Interactive 3D flight simulation of Osaka International Airport Runway 32L takeoff and the famous Itami Curve noise abatement departure with real-time parameter controls and cockpit PFD HUD." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D WebGL Canvas Container -->
+      <div id="viewport-container"></div>
+
+      <!-- UI Overlay Layer -->
+      <div class="ui-layer">
+        <!-- Top Navigation Header -->
+        <header class="top-header interactive">
+          <div class="brand-badge">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+              </svg>
+            </div>
+            <div class="brand-text">
+              <h1 id="brand-title">RJOO / ITM <span class="rwy-tag">RWY 32L</span></h1>
+              <p id="brand-subtitle">大阪伊丹空港 離陸・伊丹カーブ 3Dシミュレーター</p>
+            </div>
+          </div>
+
+          <!-- Camera Views Toolbar & Language Switcher -->
+          <div class="header-right-group">
+            <div id="view-selector-container"></div>
+            <button id="lang-toggle-btn" class="lang-toggle-btn" title="Switch Language / 言語切替">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span id="lang-btn-text">JA / EN</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- Left Cockpit Primary Flight Display (PFD) HUD -->
+        <div class="pfd-container interactive">
+          <canvas id="pfd-canvas"></canvas>
+        </div>
+
+        <!-- Right Flight Parameter Control Panel -->
+        <div class="control-panel-wrapper interactive" id="control-panel-container"></div>
+
+        <!-- Bottom Telemetry & Timeline Dock -->
+        <footer class="bottom-dock interactive">
+          <div id="telemetry-container"></div>
+        </footer>
+
+        <!-- Crash / Terrain Collision Game Over Overlay -->
+        <div id="crash-overlay" class="crash-overlay hidden">
+          <div class="crash-backdrop"></div>
+          <div class="crash-card">
+            <div class="crash-icon-wrap">
+              <svg viewBox="0 0 24 24" width="44" height="44" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <h2 class="crash-title" id="crash-title-text">TERRAIN COLLISION</h2>
+            <p class="crash-subtitle" id="crash-subtitle-text">山岳・地形衝突 / FLIGHT TERMINATED</p>
+            <div class="crash-stats-grid">
+              <div class="crash-stat">
+                <span class="cs-lbl" id="crash-lbl-speed">Impact Speed</span>
+                <span class="cs-val" id="crash-speed">155 KT</span>
+              </div>
+              <div class="crash-stat">
+                <span class="cs-lbl" id="crash-lbl-elev">Elevation</span>
+                <span class="cs-val" id="crash-elev">650 M</span>
+              </div>
+              <div class="crash-stat">
+                <span class="cs-lbl" id="crash-lbl-loc">Location</span>
+                <span class="cs-val" id="crash-loc">六甲山系・中山連峰</span>
+              </div>
+            </div>
+            <button id="crash-restart-btn" class="crash-restart-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <span id="crash-restart-text">Restart Flight [R]</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main JavaScript App Entry -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

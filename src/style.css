@@ -1,0 +1,1017 @@
+/* ===================================================================
+   ITAMI 32L FLIGHT SIMULATOR - CYBER AVIONICS GLASSMORPHISM THEME
+   =================================================================== */
+
+:root {
+  --bg-primary: #070d18;
+  --bg-panel: rgba(11, 20, 38, 0.75);
+  --bg-panel-hover: rgba(16, 28, 54, 0.85);
+  --border-glass: rgba(0, 229, 255, 0.2);
+  --border-glass-subtle: rgba(255, 255, 255, 0.12);
+  
+  --cyan-primary: #00e5ff;
+  --cyan-glow: rgba(0, 229, 255, 0.4);
+  --emerald-phase1: #00e676;
+  --orange-phase2: #ff9100;
+  --crimson-phase3: #ff1744;
+  --amber-accent: #ffb300;
+
+  --text-main: #f0f4f8;
+  --text-dim: #90a4ae;
+  --text-muted: #546e7a;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3D Canvas Viewport */
+#viewport-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#viewport-container canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* UI Overlay Layer */
+.ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.interactive {
+  pointer-events: auto;
+}
+
+/* Top App Header */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  padding: 10px 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.brand-icon {
+  color: var(--cyan-primary);
+  display: flex;
+}
+
+.brand-text h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rwy-tag {
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--cyan-primary);
+  border: 1px solid var(--border-glass);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.brand-text p {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.4px;
+}
+
+/* Header Right Group */
+.header-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Language Switcher Button */
+.lang-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  color: var(--cyan-primary);
+  padding: 6px 12px;
+  height: 46px;
+  max-height: 46px;
+  white-space: nowrap;
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lang-toggle-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--cyan-primary);
+  color: #ffffff;
+  box-shadow: 0 0 15px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+
+.lang-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* View Selector Toolbar */
+.view-toolbar {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  padding: 6px 12px;
+  height: 34px;
+  max-height: 34px;
+  white-space: nowrap;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+}
+
+.view-btn.active {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--cyan-primary);
+  color: #ffffff;
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+.shortcut-key {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.view-btn.active .shortcut-key {
+  color: var(--cyan-primary);
+}
+
+/* Cockpit PFD Glass Box (Left Upper Overlay) */
+.pfd-container {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  width: 320px;
+  height: 260px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#pfd-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Right Side Flight Parameter Control Panel */
+.control-panel-wrapper {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 330px;
+  max-height: calc(100vh - 190px);
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.control-panel-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+.control-panel-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-glass-subtle);
+  position: sticky;
+  top: 0;
+  background: rgba(11, 20, 38, 0.95);
+  z-index: 2;
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--cyan-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-content {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.panel-content.collapsed {
+  display: none;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mode-toggle-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--border-glass-subtle);
+}
+
+.mode-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  max-height: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mode-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mode-btn.active {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: var(--cyan-primary);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+}
+
+/* Manual Flight Controls HUD in Panel */
+.manual-control-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-glass-subtle);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manual-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.throttle-badge {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan-primary);
+}
+
+.thrust-meter-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.thrust-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff, #00e676, #ff9100);
+  border-radius: 3px;
+  transition: width 0.05s linear;
+}
+
+.config-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.config-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass-subtle);
+  color: var(--text-dim);
+  padding: 6px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 42px;
+  transition: all 0.2s;
+}
+
+.config-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.config-btn.active {
+  background: rgba(0, 230, 118, 0.15);
+  border-color: #00e676;
+  color: #ffffff;
+}
+
+.cfg-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.cfg-val {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-main);
+}
+
+.manual-key-hints {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-glass-subtle);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--cyan-primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.hint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.hint-row kbd {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 18px;
+  text-align: center;
+}
+
+.preset-buttons, .env-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.preset-buttons.three-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.preset-buttons.two-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.preset-buttons.four-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.preset-btn, .env-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass-subtle);
+  color: var(--text-dim);
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  height: 32px;
+  max-height: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preset-btn:hover, .env-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.preset-btn.active, .env-btn.active {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--cyan-primary);
+  color: #ffffff;
+}
+
+.preset-btn.danger {
+  border-color: rgba(255, 23, 68, 0.4);
+  color: #ff8a80;
+}
+
+.preset-btn.danger:hover {
+  background: rgba(255, 23, 68, 0.15);
+  border-color: #ff1744;
+  color: #ffffff;
+}
+
+.preset-btn.danger.active {
+  background: rgba(255, 23, 68, 0.25);
+  border-color: #ff1744;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 23, 68, 0.35);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-glass-subtle);
+  margin: 2px 0;
+}
+
+/* Parameter Sliders */
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.slider-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.slider-name {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.slider-val {
+  font-family: var(--font-mono);
+  color: var(--cyan-primary);
+  font-weight: 600;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--cyan-primary);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--cyan-glow);
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.action-buttons {
+  margin-top: 8px;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-panel);
+  padding-top: 6px;
+  padding-bottom: 2px;
+}
+
+.action-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  height: 36px;
+  max-height: 36px;
+  white-space: nowrap;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass-subtle);
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Bottom Telemetry & Timeline Control Bar */
+.bottom-dock {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.telemetry-bar {
+  width: 100%;
+  max-width: 1100px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  border-bottom: 1px solid var(--border-glass-subtle);
+  padding-bottom: 10px;
+}
+
+.telem-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.telem-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.telem-val {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.telem-val small {
+  font-size: 10px;
+  color: var(--cyan-primary);
+  font-weight: 600;
+}
+
+/* Timeline Playback Bar */
+.timeline-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ctrl-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass-subtle);
+  color: var(--text-main);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.ctrl-btn.main-play {
+  background: var(--cyan-primary);
+  border-color: var(--cyan-primary);
+  color: #000000;
+  box-shadow: 0 0 14px var(--cyan-glow);
+}
+
+.ctrl-btn.active {
+  color: var(--cyan-primary);
+  border-color: var(--cyan-primary);
+}
+
+.time-readout {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  min-width: 44px;
+}
+
+.scrub-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#timeline-scrub {
+  height: 6px;
+}
+
+.phase-markers {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  margin-top: 4px;
+}
+
+.marker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
+.marker-ph1 {
+  left: 0%;
+  transform: translateX(0);
+  color: var(--emerald-phase1);
+}
+
+.marker-ph2 {
+  left: 36%;
+  color: var(--orange-phase2);
+}
+
+.marker-ph3 {
+  left: 64%;
+  color: var(--crimson-phase3);
+}
+
+.speed-toggle {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 2px;
+  border: 1px solid var(--border-glass-subtle);
+}
+
+.speed-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.speed-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+}
+
+.icon-btn.rotated svg {
+  transform: rotate(180deg);
+}
+
+/* Crash / Terrain Collision Overlay */
+.crash-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  animation: crashFlash 0.4s ease-out;
+}
+
+@keyframes crashFlash {
+  0% {
+    background: rgba(255, 23, 68, 0.85);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+.crash-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(138, 7, 7, 0.6) 0%, rgba(20, 0, 0, 0.92) 80%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.crash-card {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 440px;
+  background: rgba(26, 9, 12, 0.95);
+  border: 2px solid #ff1744;
+  border-radius: 18px;
+  padding: 30px 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(255, 23, 68, 0.6), 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: crashCardPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes crashCardPop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.crash-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 23, 68, 0.15);
+  border: 2px solid #ff1744;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff1744;
+  margin-bottom: 14px;
+  box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
+}
+
+.crash-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  text-shadow: 0 0 12px rgba(255, 23, 68, 0.8);
+}
+
+.crash-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ff8a80;
+  margin: 0 0 20px 0;
+  letter-spacing: 0.5px;
+}
+
+.crash-stats-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.crash-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cs-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.cs-val {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #ffffff;
+}
+
+.crash-restart-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff1744, #d50000);
+  border: none;
+  color: #ffffff;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(255, 23, 68, 0.5);
+  transition: all 0.2s;
+}
+
+.crash-restart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(255, 23, 68, 0.7);
+  background: linear-gradient(135deg, #ff5252, #ff1744);
+}
+
+.crash-restart-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .pfd-container {
+    width: 220px;
+    height: 180px;
+  }
+  .control-panel-wrapper {
+    width: 260px;
+  }
+  .telemetry-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
